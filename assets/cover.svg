@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-labelledby="title desc">
+  <title id="title">Explainable Quran and Hadith Retrieval</title>
+  <desc id="desc">Bilingual Arabic and English hybrid semantic search</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#061714"/>
+      <stop offset=".55" stop-color="#0A2230"/>
+      <stop offset="1" stop-color="#151330"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#2DD4BF"/>
+      <stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#A7F3D0" stroke-opacity=".06"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="300" rx="22" fill="url(#bg)"/>
+  <rect width="1280" height="300" rx="22" fill="url(#grid)"/>
+  <rect x="60" y="55" width="104" height="4" rx="2" fill="url(#line)"/>
+  <text x="60" y="116" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700">Explainable Quran and Hadith Retrieval</text>
+  <text x="60" y="160" fill="#B6C8D8" font-family="Segoe UI, Arial, sans-serif" font-size="21">Bilingual retrieval with hybrid ranking, source references, and inspectable matches</text>
+  <g transform="translate(60 207)">
+    <rect width="167" height="38" rx="19" fill="#103832" stroke="#2DD4BF" stroke-opacity=".55"/>
+    <text x="22" y="25" fill="#CCFBF1" font-family="Segoe UI, Arial, sans-serif" font-size="15">ARABIC + ENGLISH</text>
+    <rect x="181" width="148" height="38" rx="19" fill="#22203F" stroke="#A78BFA" stroke-opacity=".55"/>
+    <text x="205" y="25" fill="#EDE9FE" font-family="Segoe UI, Arial, sans-serif" font-size="15">HYBRID SEARCH</text>
+  </g>
+  <g transform="translate(935 38)" fill="none">
+    <circle cx="135" cy="112" r="76" stroke="#2DD4BF" stroke-width="2" stroke-opacity=".65"/>
+    <circle cx="135" cy="112" r="35" stroke="#A78BFA" stroke-width="3"/>
+    <circle cx="135" cy="112" r="9" fill="#F8FAFC"/>
+    <g stroke="url(#line)" stroke-width="2">
+      <path d="M135 36V8"/>
+      <path d="M135 216v-28"/>
+      <path d="M59 112H31"/>
+      <path d="M239 112h-28"/>
+      <path d="m81 58-20-20"/>
+      <path d="m209 186-20-20"/>
+      <path d="m189 58 20-20"/>
+      <path d="m61 186 20-20"/>
+    </g>
+    <g fill="#2DD4BF">
+      <circle cx="135" cy="8" r="6"/>
+      <circle cx="135" cy="216" r="6"/>
+      <circle cx="31" cy="112" r="6"/>
+      <circle cx="239" cy="112" r="6"/>
+    </g>
+    <g fill="#A78BFA">
+      <circle cx="61" cy="38" r="5"/>
+      <circle cx="209" cy="186" r="5"/>
+      <circle cx="209" cy="38" r="5"/>
+      <circle cx="61" cy="186" r="5"/>
+    </g>
+  </g>
+</svg>

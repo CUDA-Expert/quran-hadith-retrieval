@@ -1,127 +1,105 @@
-# Explainable Quran and Hadith Retrieval
+<p align="center">
+  <img src="./assets/cover.svg" width="100%" alt="Explainable Quran and Hadith Retrieval" />
+</p>
 
-A bilingual Arabic and English retrieval system for finding relevant Quran
-verses and Hadith records with source references and short match explanations.
+<p align="center">
+  <img src="https://img.shields.io/badge/Arabic%20%2B%20English-Bilingual-14B8A6?style=flat-square" alt="Arabic and English" />
+  <img src="https://img.shields.io/badge/Search-Hybrid-8B5CF6?style=flat-square" alt="Hybrid search" />
+  <img src="https://img.shields.io/badge/Public%20Edition-Case%20Study-334155?style=flat-square" alt="Public case study" />
+</p>
 
-The project was developed by a university team. Mohammed Yousef Rasheed focused
-on Arabic normalization, the hybrid retrieval layer, and the evaluation harness.
+A bilingual retrieval system for discovering relevant Quran verses and Hadith
+records through semantic similarity, Arabic aware lexical matching, and
+inspectable source references.
 
-## The Problem
+> Developed collaboratively as a university team project. This repository is
+> the public system case study; the active source workspace remains private.
 
-Arabic religious text retrieval cannot rely on literal word overlap alone.
-Diacritics, letter variants, morphology, translation differences, and short
-conceptual queries can separate a useful result from the exact wording entered
-by a user.
+## At a glance
 
-The system combines lexical and semantic signals, then returns references and
-match explanations so relevance can be inspected rather than accepted blindly.
+<table>
+  <tr>
+    <td align="center"><strong>40,098</strong><br />indexed records</td>
+    <td align="center"><strong>6,236</strong><br />Quran verses</td>
+    <td align="center"><strong>33,862</strong><br />Hadith records</td>
+    <td align="center"><strong>6</strong><br />major Hadith collections</td>
+  </tr>
+</table>
 
-## Verified Corpus
+## Why it matters
 
-The bundled loader returns **40,098 records**:
+Arabic religious text retrieval cannot depend on exact word overlap. Diacritics,
+letter variants, morphology, translation differences, and conceptual queries
+can separate a useful result from the wording entered by a user.
 
-| Source | Records |
-| --- | ---: |
-| Quran | 6,236 |
-| Hadith | 33,862 |
+The system combines lexical and semantic signals so no single retrieval method
+controls the result. Each result preserves its source reference and includes a
+short explanation that supports human review.
 
-The Hadith corpus covers Bukhari, Muslim, an Nasai, Abu Dawud, at Tirmidhi, and
-Ibn Majah.
+## Retrieval design
 
-## Retrieval Pipeline
-
-```text
-Arabic or English query
-        ↓
-Normalization and language aware preprocessing
-        ↓
-Dense embeddings and TF IDF character matching
-        ↓
-FAISS candidates and metadata filters
-        ↓
-Hybrid ranking
-        ↓
-Source reference and match explanation
+```mermaid
+flowchart LR
+    A[Arabic or English query] --> B[Normalization and language processing]
+    B --> C[Dense semantic retrieval]
+    B --> D[Character level TF IDF]
+    C --> E[FAISS candidates]
+    D --> F[Lexical candidates]
+    E --> G[Hybrid ranking]
+    F --> G
+    G --> H[Source reference and match explanation]
 ```
 
-The design combines multilingual Sentence Transformer embeddings with character
-level TF IDF so Arabic spelling and morphology do not depend on one retrieval
-signal.
+### Engineering choices
 
-## Engineering Decisions
+| Decision | Purpose |
+| --- | --- |
+| Multilingual embeddings | Capture conceptual similarity across Arabic and English |
+| Character level TF IDF | Remain sensitive to names, phrases, and Arabic spelling variation |
+| Hybrid ranking | Balance semantic recall with lexical precision |
+| Source aware records | Preserve collection, reference, language, and grading metadata |
+| Fingerprinted indexes | Rebuild cached artifacts when the underlying corpus changes |
+| Explainable result cards | Show why a record matched without hiding the original source |
 
-**Hybrid retrieval**
+## Evaluation contract
 
-Dense embeddings capture conceptual similarity while character level TF IDF
-retains sensitivity to names, phrases, and Arabic orthographic variation.
+The private workspace includes an evaluation harness for:
 
-**Source aware records**
+`Precision@5` `Recall@5` `F1@5` `MRR` `nDCG@5` `Query latency`
 
-Every result carries a stable identifier, source type, collection metadata,
-language fields, and a reference. Retrieval relevance is kept separate from
-religious authenticity metadata.
+The current gold file is a starter benchmark. Strong retrieval quality claims
+require a larger relevance set reviewed by qualified humans, with results
+reported separately by language and source.
 
-**Reproducible indexing**
+## Verified state
 
-Dataset fingerprints and index metadata determine whether cached FAISS artifacts
-can be reused or must be rebuilt.
+The preserved source baseline was reviewed on 29 July 2026.
 
-**Explainability at the result level**
+| Check | Result |
+| --- | --- |
+| Dependency independent tests | 10 passed |
+| Python compilation | Passed |
+| Corpus loader | 40,098 records returned |
+| Full FAISS execution | Pending in the verification environment |
 
-The interface describes why a result matched and preserves the source reference
-needed for human review.
+## Public and private boundary
 
-## Evaluation
+This public repository contains the architecture, evaluation contract, verified
+state, limitations, and roadmap. The full source and bundled corpus remain in a
+private team repository while dataset attribution and the complete retrieval
+evaluation path are reviewed.
 
-The repository includes an evaluation harness for:
+## Roadmap
 
-* Precision at 5
-* Recall at 5
-* F1 at 5
-* Mean Reciprocal Rank
-* nDCG at 5
-* average query latency
+1. Expand Arabic and English benchmark queries.
+2. Add hard negatives and morphology focused failure cases.
+3. Compare lexical, dense, and hybrid methods under one frozen protocol.
+4. Report quality separately by language and collection.
+5. Add citation level feedback without altering source texts.
 
-The included gold file is a starter benchmark. It should be expanded with
-qualified human judgments before the project makes strong retrieval quality
-claims.
-
-## Verified Baseline
-
-The private source baseline was checked without modification on 29 July 2026:
-
-* 10 dependency independent tests passed
-* Python compilation passed
-* the loader returned 40,098 records
-
-The complete test suite requires FAISS. FAISS was not installed in the verification
-environment, so full retrieval execution remains to be confirmed there.
-
-## Source Availability
-
-The complete team source and bundled corpus are maintained in a private
-development repository while dataset attribution, local path cleanup, and the
-full FAISS evaluation path are reviewed. This public repository presents the
-system design and verified evidence without exposing the working repository.
-
-## Current Limitations
-
-* the starter relevance benchmark is too small for strong quality claims
-* scholarly review is needed for a production grade relevance set
-* first time embedding setup may require model downloads
-* retrieval relevance must never be presented as religious authority
-* latency and memory behavior still need measurement on the full FAISS index
-
-## Next Technical Milestones
-
-* expand the benchmark with Arabic and English query families
-* add hard negatives and morphology focused failure cases
-* report per source and per language retrieval quality
-* compare lexical, dense, and hybrid methods under one frozen protocol
-* add citation level feedback without modifying the source texts
-
-## Scope
+## Responsible use
 
 This is an information retrieval project, not a source of religious rulings.
-Results should always preserve their references, text, grading metadata, and
+Retrieval relevance must never be presented as religious authority. Results
+should preserve their original text, source reference, grading metadata, and
 human review context.
