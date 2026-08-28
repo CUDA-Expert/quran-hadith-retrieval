@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/cover.svg" width="100%" alt="Explainable Quran and Hadith Retrieval" />
+  <img src="./assets/search-interface.jpg" width="100%" alt="Bilingual search interface: an Arabic query with source filters for the Quran and the six Hadith collections, returning result cards that show the Arabic passage, its English translation, the source reference, and an explanation of why it matched" />
 </p>
 
 <p align="center">
@@ -26,6 +26,18 @@ inspectable source references.
   </tr>
 </table>
 
+## The corpus
+
+The complete Holy Quran alongside Kutub al-Sittah, indexed as one searchable
+corpus with each record keeping its collection, reference, language, and
+grading metadata.
+
+| Source | Records |
+| --- | ---: |
+| The Holy Quran | 6,236 |
+| Sahih al-Bukhari, Sahih Muslim, Jami' at-Tirmidhi, Sunan Abi Dawud, Sunan an-Nasa'i, Sunan Ibn Majah | 33,862 |
+| **Total indexed** | **40,098** |
+
 ## Why it matters
 
 Arabic religious text retrieval cannot depend on exact word overlap. Diacritics,
@@ -35,6 +47,19 @@ can separate a useful result from the wording entered by a user.
 The system combines lexical and semantic signals so no single retrieval method
 controls the result. Each result preserves its source reference and includes a
 short explanation that supports human review.
+
+## What a result card carries
+
+A returned passage is never presented on its own. Each card shows the source
+collection and its reference, the original Arabic with diacritics preserved and
+rendered right to left, the English translation, and a written explanation of
+why the record was retrieved.
+
+That explanation is the point of the project. A user who searches for a concept
+and receives a passage containing none of their words needs to be told that the
+match came from semantic similarity rather than shared wording, otherwise the
+result is indistinguishable from an error. The original text is displayed
+unaltered in every case.
 
 ## Retrieval design
 
@@ -67,9 +92,15 @@ The private workspace includes an evaluation harness for:
 
 `Precision@5` `Recall@5` `F1@5` `MRR` `nDCG@5` `Query latency`
 
-The current gold file is a starter benchmark. Strong retrieval quality claims
-require a larger relevance set reviewed by qualified humans, with results
-reported separately by language and source.
+**No retrieval quality figures are published here, deliberately.** The current
+gold file is a starter set of a handful of queries, which is enough to exercise
+the harness and nowhere near enough to characterise a 40,098 record corpus. Any
+number produced from it would be noise presented as a measurement.
+
+A credible benchmark for this corpus needs a substantially larger relevance set
+built with qualified human review, hard negatives, morphology focused failure
+cases, and results reported separately by language and by collection. That work
+is in progress, and figures will be published when the protocol supports them.
 
 ## Verified state
 
