@@ -1,65 +1,57 @@
-<p align="center">
-  <img src="./assets/search-interface.jpg" width="100%" alt="Bilingual search interface: an Arabic query with source filters for the Quran and the six Hadith collections, returning result cards that show the Arabic passage, its English translation, the source reference, and an explanation of why it matched" />
-</p>
+![Quran and Hadith Retrieval portfolio cover](./assets/portfolio-cover.webp)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Arabic%20%2B%20English-Bilingual-14B8A6?style=flat-square" alt="Arabic and English" />
-  <img src="https://img.shields.io/badge/Search-Hybrid-8B5CF6?style=flat-square" alt="Hybrid search" />
-  <img src="https://img.shields.io/badge/Public%20Edition-Case%20Study-334155?style=flat-square" alt="Public case study" />
-</p>
+<sub>Concept illustration. The application screenshot appears below.</sub>
 
-A bilingual retrieval system for discovering relevant Quran verses and Hadith
-records through semantic similarity, Arabic aware lexical matching, and
-inspectable source references.
+# Quran and Hadith Retrieval
 
-> Developed collaboratively as a university team project. This repository is
-> the public system case study; the active source workspace remains private.
+**Find relevant passages across Arabic and English. Keep the source visible.**
 
-## At a glance
+A university team project combining semantic search and Arabic lexical matching to retrieve Quran verses and Hadith records with inspectable references and explanations.
 
-<table>
-  <tr>
-    <td align="center"><strong>40,098</strong><br />indexed records</td>
-    <td align="center"><strong>6,236</strong><br />Quran verses</td>
-    <td align="center"><strong>33,862</strong><br />Hadith records</td>
-    <td align="center"><strong>6</strong><br />major Hadith collections</td>
-  </tr>
-</table>
+**Public case study** · **Private team source** · **Retrieval benchmark pending**
 
-## The corpus
+[Interface](#the-interface) · [My contribution](#my-contribution) · [Architecture](#retrieval-design) · [Evidence](#evidence-and-evaluation)
 
-The complete Holy Quran alongside Kutub al-Sittah, indexed as one searchable
-corpus with each record keeping its collection, reference, language, and
-grading metadata.
+## The challenge
 
-| Source | Records |
+A conceptual query may share few words with a relevant passage. Arabic diacritics, spelling variation, morphology, and differences between translations make exact matching alone insufficient.
+
+The system combines dense and lexical retrieval, then presents the original passage alongside its source and an explanation of the match.
+
+| Corpus | Records |
 | --- | ---: |
-| The Holy Quran | 6,236 |
-| Sahih al-Bukhari, Sahih Muslim, Jami' at-Tirmidhi, Sunan Abi Dawud, Sunan an-Nasa'i, Sunan Ibn Majah | 33,862 |
-| **Total indexed** | **40,098** |
+| Quran verses | 6,236 |
+| Hadith records across six major collections | 33,862 |
+| **Total corpus** | **40,098** |
 
-## Why it matters
+The Hadith corpus covers Sahih al-Bukhari, Sahih Muslim, Jami' at-Tirmidhi, Sunan Abi Dawud, Sunan an-Nasa'i, and Sunan Ibn Majah. Records retain collection, reference, language, and grading metadata.
 
-Arabic religious text retrieval cannot depend on exact word overlap. Diacritics,
-letter variants, morphology, translation differences, and conceptual queries
-can separate a useful result from the wording entered by a user.
+These figures describe corpus scale. They do not measure retrieval quality.
 
-The system combines lexical and semantic signals so no single retrieval method
-controls the result. Each result preserves its source reference and includes a
-short explanation that supports human review.
+## My contribution
 
-## What a result card carries
+I worked on Arabic normalization, hybrid retrieval, and the evaluation harness.
 
-A returned passage is never presented on its own. Each card shows the source
-collection and its reference, the original Arabic with diacritics preserved and
-rendered right to left, the English translation, and a written explanation of
-why the record was retrieved.
+| Area | My work |
+| --- | --- |
+| Arabic processing | Normalization for retrieval while preserving the original text for display |
+| Hybrid search | Combining semantic and lexical matching |
+| Evaluation | A harness for ranking quality and query latency |
 
-That explanation is the point of the project. A user who searches for a concept
-and receives a passage containing none of their words needs to be told that the
-match came from semantic similarity rather than shared wording, otherwise the
-result is indistinguishable from an error. The original text is displayed
-unaltered in every case.
+The system was developed collaboratively. The architecture and corpus described here belong to the team project.
+
+## The interface
+
+![Bilingual search interface showing an Arabic query, collection filters, and result cards with Arabic text, English translation, source references, and match explanations](./assets/search-interface.jpg)
+
+Each result card brings together:
+
+- Original Arabic text with diacritics and right to left presentation.
+- English translation.
+- Source collection and reference.
+- An explanation of why the passage matched.
+
+The explanation helps the reader distinguish semantic similarity from shared wording and assess the retrieved passage in context.
 
 ## Retrieval design
 
@@ -75,62 +67,47 @@ flowchart LR
     G --> H[Source reference and match explanation]
 ```
 
-### Engineering choices
-
-| Decision | Purpose |
+| Engineering choice | Purpose |
 | --- | --- |
 | Multilingual embeddings | Capture conceptual similarity across Arabic and English |
-| Character level TF IDF | Remain sensitive to names, phrases, and Arabic spelling variation |
-| Hybrid ranking | Balance semantic recall with lexical precision |
-| Source aware records | Preserve collection, reference, language, and grading metadata |
-| Fingerprinted indexes | Rebuild cached artifacts when the underlying corpus changes |
-| Explainable result cards | Show why a record matched without hiding the original source |
+| Character level TF IDF | Retain sensitivity to names, phrases, and spelling variation |
+| Hybrid ranking | Combine semantic and lexical signals |
+| Source metadata | Keep retrieved text connected to its collection and reference |
+| Fingerprinted indexes | Rebuild cached artifacts when the corpus changes |
 
-## Evaluation contract
+## Evidence and evaluation
 
-The private workspace includes an evaluation harness for:
+The preserved source baseline was reviewed on **29 July 2026**.
 
-`Precision@5` `Recall@5` `F1@5` `MRR` `nDCG@5` `Query latency`
-
-**No retrieval quality figures are published here, deliberately.** The current
-gold file is a starter set of a handful of queries, which is enough to exercise
-the harness and nowhere near enough to characterise a 40,098 record corpus. Any
-number produced from it would be noise presented as a measurement.
-
-A credible benchmark for this corpus needs a substantially larger relevance set
-built with qualified human review, hard negatives, morphology focused failure
-cases, and results reported separately by language and by collection. That work
-is in progress, and figures will be published when the protocol supports them.
-
-## Verified state
-
-The preserved source baseline was reviewed on 29 July 2026.
-
-| Check | Result |
+| Check | Recorded result |
 | --- | --- |
 | Dependency independent tests | 10 passed |
 | Python compilation | Passed |
 | Corpus loader | 40,098 records returned |
 | Full FAISS execution | Pending in the verification environment |
 
-## Public and private boundary
+These are results from that baseline review, not a new execution of the system.
 
-This public repository contains the architecture, evaluation contract, verified
-state, limitations, and roadmap. The full source and bundled corpus remain in a
-private team repository while dataset attribution and the complete retrieval
-evaluation path are reviewed.
+The private workspace includes an evaluation harness for `Precision@5`, `Recall@5`, `F1@5`, `MRR`, `nDCG@5`, and query latency.
 
-## Roadmap
+**No retrieval quality figures are published.** The current relevance set contains only a handful of starter queries. It exercises the harness but cannot support a reliable performance claim for this corpus.
 
-1. Expand Arabic and English benchmark queries.
+A credible benchmark needs a larger relevance set with qualified human review, hard negatives, morphology focused cases, and separate results by language and collection.
+
+## Next steps
+
+1. Expand the Arabic and English relevance set.
 2. Add hard negatives and morphology focused failure cases.
-3. Compare lexical, dense, and hybrid methods under one frozen protocol.
+3. Compare lexical, dense, and hybrid retrieval under one frozen protocol.
 4. Report quality separately by language and collection.
-5. Add citation level feedback without altering source texts.
+5. Add citation feedback while preserving source text.
+
+## Repository scope
+
+This public repository contains the system case study, interface image, architecture, evaluation contract, evidence status, and roadmap.
+
+The full source and bundled corpus remain in a private team repository while dataset attribution and the complete evaluation path are reviewed.
 
 ## Responsible use
 
-This is an information retrieval project, not a source of religious rulings.
-Retrieval relevance must never be presented as religious authority. Results
-should preserve their original text, source reference, grading metadata, and
-human review context.
+This is an information retrieval project, not a source of religious rulings. Retrieval relevance must not be presented as religious authority. Results should retain their original text, source reference, grading metadata, and human review context.
